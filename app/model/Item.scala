@@ -1,8 +1,5 @@
 package model
 
-
-// Vous pouvez choisir d'importer des bibliothèques supplémentaires si nécessaire
-
 // Définition du modèle Item
 case class Item(id: String, name: String, description: String, score: Int, imageUrl: String)
 
