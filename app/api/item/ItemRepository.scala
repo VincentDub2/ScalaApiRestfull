@@ -5,10 +5,13 @@ import play.api.i18n.Lang.logger
 import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
-// Vous devez importer votre système de gestion de base de données et le contexte d'exécution ici
 
+// Inject() permet d'injecter des dépendances dans une classe
 class ItemRepository @Inject()(implicit ec: ExecutionContext) {
+
   // Simuler une base de données en mémoire
+  // La liste des items
+  // Le projet est trop petit pour avoir besoin d'une vraie base de données
   private var items: List[Item] = List(
     Item("1", "Jean", "24,56 kg CO2e / unité Valeurs exprimées en kg CO2e émis par produit comprenant la fabrication, la distribution et l’usage. La production de jeans a un bilan carbone élevé en raison de la culture intensive du coton, de la teinture, de la consommation d'eau et de l'énergie dans la fabrication, ainsi que du transport. Opter pour des jeans durables, recyclés ou de seconde main et réduire la surconsommation de vêtements peut contribuer à atténuer leur impact environnemental.", +80, "https://res.cloudinary.com/dfkkgyk5w/image/upload/v1701994633/njqh5jahq6vour3govi9.png"),
     Item("2", "Arbre", "Absorbe environ 25 kg de CO2 par an. Offrant une ombre protectrice et un effet rafraîchissant", -70, "https://res.cloudinary.com/dfkkgyk5w/image/upload/v1702006872/o15sjuzkqsxkjxb62ohj.png"),
@@ -33,6 +36,7 @@ class ItemRepository @Inject()(implicit ec: ExecutionContext) {
   )
 
   // Méthode pour lister tous les items
+  // Future est utilisé pour rendre la méthode asynchrone
   def list(): Future[List[Item]] = Future {
     items
   }
@@ -43,15 +47,15 @@ class ItemRepository @Inject()(implicit ec: ExecutionContext) {
     items.find(_.id == id)
   }
 
+  // Methode pour obtenir un item par son nom
   def getByName(name: String): Future[Option[Item]] = Future {
     logger.trace(s"get: name = $name")
     items.find(_.name == name)
   }
 
   // Méthode pour créer un nouvel item
+  // Non utilisé dans ce projet
   def create(item: Item): Future[Unit] = Future {
     items = items :+ item
   }
-
-  // Ajoutez d'autres méthodes si nécessaire, comme la mise à jour ou la suppression d'items
 }

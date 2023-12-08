@@ -33,6 +33,5 @@ class ItemRouter @Inject()(controller: ItemController) extends SimpleRouter {
     case POST(p"/") =>
       controller.create  // Créer un nouvel item
 
-    // Ajoutez d'autres routes ici si nécessaire, par exemple pour la mise à jour ou la suppression
   }
 }

@@ -9,7 +9,7 @@ import play.api.{Logger, MarkerContext}
 
 import javax.inject.Inject
 
-// Importez votre modèle de requête ici si nécessaire
+
 
 // Un contexte de requête personnalisé pour les items
 trait ItemRequestHeader extends MessagesRequestHeader with PreferredMessagesProvider
@@ -20,8 +20,13 @@ class ItemRequest[A](request: Request[A], val messagesApi: MessagesApi)
 trait RequestMarkerContext {
   import net.logstash.logback.marker.Markers
 
+
+  // Markers permet de créer des marqueurs pour les logs
   private def marker(tuple: (String, Any)) = Markers.append(tuple._1, tuple._2)
 
+  // Crée un marqueur implicite pour les logs
+  // Les marqueurs sont utilisés pour ajouter des informations aux logs
+  // Implicit signifie que le compilateur peut trouver ce marqueur sans que nous ayons à l'importer
   implicit def requestHeaderToMarkerContext(implicit request: RequestHeader): MarkerContext = {
     MarkerContext(
       Markers.aggregate(
@@ -40,10 +45,16 @@ class ItemActionBuilder @Inject()(messagesApi: MessagesApi, playBodyParsers: Pla
 
   override val parser: BodyParser[AnyContent] = playBodyParsers.anyContent
 
+
+  // Un bloc de requête d'item
+  // Il s'agit d'une fonction qui prend une requête d'item et renvoie un résultat
+  // Le résultat est un Future, car les requêtes peuvent être asynchrones
   type ItemRequestBlock[A] = ItemRequest[A] => Future[Result]
 
   private val logger = Logger(this.getClass)
 
+  // Exécute le bloc de requête
+  // Override la méthode invokeBlock pour ajouter des en-têtes de cache
   override def invokeBlock[A](request: Request[A], block: ItemRequestBlock[A]): Future[Result] = {
     implicit val markerContext: MarkerContext = requestHeaderToMarkerContext(request)
     logger.trace("invokeBlock: ")

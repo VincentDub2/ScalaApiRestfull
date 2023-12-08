@@ -5,7 +5,6 @@ import play.api.mvc._
 import scala.concurrent.{ExecutionContext, Future}
 import play.api.libs.json.Json
 
-// Importez vos modèles et dépôts ici
 import model.Item
 
 // Un formulaire pour valider les données de l'item
@@ -48,6 +47,7 @@ class ItemController @Inject()(cc: ControllerComponents, itemRepository: ItemRep
     }
   }
 
+  // Action pour afficher un item spécifique par son nom
   def showByName(name: String): Action[AnyContent] = Action.async { implicit request =>
     itemRepository.getByName(name).map {
       case Some(item) => Ok(Json.toJson(item))
@@ -55,6 +55,8 @@ class ItemController @Inject()(cc: ControllerComponents, itemRepository: ItemRep
     }
   }
 
+  // Action pour créer un nouvel item
+  // Non utilisé dans ici
   def create: Action[AnyContent] = Action.async { implicit request =>
     ItemFormInput.form.bindFromRequest().fold( // Ajoutez les parenthèses vides ici
       errorForm => {
@@ -75,10 +77,6 @@ class ItemController @Inject()(cc: ControllerComponents, itemRepository: ItemRep
       }
     )
   }
-
-
-
-  // Ajoutez d'autres actions si nécessaire, comme la mise à jour ou la suppression d'items
 }
 
-//Item(id: String, name: String, description: String, score: Int, imageUrl: String)
+
