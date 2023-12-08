@@ -8,7 +8,7 @@ import play.api.libs.json.Json
 import model.Item
 
 // Un formulaire pour valider les données de l'item
-case class ItemFormInput(name: String, description: String, score: Int, imageUrl: String)
+case class ItemFormInput(name: String, description: String, score: Int, imageUrl: String, CO2: String)
 
 object ItemFormInput {
   import play.api.data.Forms._
@@ -20,7 +20,8 @@ object ItemFormInput {
       "name" -> nonEmptyText,
       "description" -> nonEmptyText,
       "score" -> number,
-      "imageUrl" -> nonEmptyText
+      "imageUrl" -> nonEmptyText,
+      "CO2" -> nonEmptyText
     )(ItemFormInput.apply)(ItemFormInput.unapply)
   )
 }
@@ -58,18 +59,18 @@ class ItemController @Inject()(cc: ControllerComponents, itemRepository: ItemRep
   // Action pour créer un nouvel item
   // Non utilisé dans ici
   def create: Action[AnyContent] = Action.async { implicit request =>
-    ItemFormInput.form.bindFromRequest().fold( // Ajoutez les parenthèses vides ici
+    ItemFormInput.form.bindFromRequest().fold(
       errorForm => {
         Future.successful(BadRequest("Invalid data"))
       },
       data => {
-        // Assurez-vous que tous les champs nécessaires sont inclus ici
         val newItem = Item(
-          id = java.util.UUID.randomUUID().toString, // Générez un ID unique si nécessaire
+          id = java.util.UUID.randomUUID().toString, // Génére un ID unique
           name = data.name,
           description = data.description,
           score = data.score,
-          imageUrl = data.imageUrl // Assurez-vous que ce champ est fourni
+          imageUrl = data.imageUrl,
+          CO2 = data.CO2
         )
         itemRepository.create(newItem).map { _ =>
           Created(Json.toJson(newItem))

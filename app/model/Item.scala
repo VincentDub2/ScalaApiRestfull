@@ -1,7 +1,7 @@
 package model
 
 // Définition du modèle Item
-case class Item(id: String, name: String, description: String, score: Int, imageUrl: String)
+case class Item(id: String, name: String, description: String, score: Int, imageUrl: String, CO2: String)
 
 object Item {
   import play.api.libs.json._
