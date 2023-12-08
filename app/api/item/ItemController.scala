@@ -48,6 +48,13 @@ class ItemController @Inject()(cc: ControllerComponents, itemRepository: ItemRep
     }
   }
 
+  def showByName(name: String): Action[AnyContent] = Action.async { implicit request =>
+    itemRepository.getByName(name).map {
+      case Some(item) => Ok(Json.toJson(item))
+      case None => NotFound
+    }
+  }
+
   def create: Action[AnyContent] = Action.async { implicit request =>
     ItemFormInput.form.bindFromRequest().fold( // Ajoutez les parenthèses vides ici
       errorForm => {

@@ -23,7 +23,10 @@ class ItemRouter @Inject()(controller: ItemController) extends SimpleRouter {
     case GET(p"/") =>
       controller.index  // Récupérer tous les items
 
-    case GET(p"/$id") =>
+    case GET(p"/name/$name") =>
+      controller.showByName(name)  // Récupérer un item spécifique par son nom
+
+    case GET(p"/id/$id") =>
       controller.show(id)  // Récupérer un item spécifique par son ID
 
     case POST(p"/") =>

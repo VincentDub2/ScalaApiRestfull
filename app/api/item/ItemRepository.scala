@@ -44,6 +44,11 @@ class ItemRepository @Inject()(implicit ec: ExecutionContext) {
     items.find(_.id == id)
   }
 
+  def getByName(name: String): Future[Option[Item]] = Future {
+    logger.trace(s"get: name = $name")
+    items.find(_.name == name)
+  }
+
   // Méthode pour créer un nouvel item
   def create(item: Item): Future[Unit] = Future {
     items = items :+ item
