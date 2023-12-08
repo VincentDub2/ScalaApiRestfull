@@ -36,3 +36,9 @@ et obtenir en retour :
 GET /api/item HTTP/1.1
 ```
 
+
+## 📚 Documentation
+
+Cette api a était fait avec Play Framework, vous pouvez retrouver la documentation ici : https://www.playframework.com/documentation/2.8.x/Home
+Elle est construite grace au "template" play-scala-rest-api-example :
+https://github.com/playframework/play-samples/
