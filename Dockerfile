@@ -1,8 +1,27 @@
-# Étape 1 : Utiliser une image de base avec SBT pour construire l'application
-FROM hseeberger/scala-sbt:11.0.13_1.5.5_2.13.7 as builder
+# Étape 1: Utiliser une image de base avec sbt et Java pour construire l'application
+FROM mozilla/sbt:latest as build
 
-# Exposer le port sur lequel votre application Scala Play écoute (par défaut 9000)
+# Copier les fichiers de l'application dans l'image
+COPY . /app
+WORKDIR /app
+
+# Compiler et stager l'application
+RUN sbt clean compile stage
+
+# Étape 2: Préparer l'image d'exécution avec OpenJDK
+FROM openjdk:11-jre-slim
+
+# Copier les binaires de l'application compilée depuis l'image de build
+COPY --from=build /app/target/universal/stage /app
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Exposer le port sur lequel l'application s'exécute
 EXPOSE 9000
 
-RUN sbt run
+# Définir la variable d'environnement pour le secret Play
+ENV PLAY_HTTP_SECRET_KEY=your-secret-key
 
+# Commande pour démarrer l'application
+CMD ["/app/bin/rest-api-nuit-l'info", "-Dplay.http.secret.key=$PLAY_HTTP_SECRET_KEY"]
