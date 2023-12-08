@@ -9,7 +9,7 @@ WORKDIR /app
 RUN sbt clean compile stage
 
 # Étape 2: Préparer l'image d'exécution avec OpenJDK
-FROM openjdk:11-jre-slim
+FROM openjdk:21-jre-slim
 
 # Copier les binaires de l'application compilée depuis l'image de build
 COPY --from=build /app/target/universal/stage /app
