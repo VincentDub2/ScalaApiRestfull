@@ -6,11 +6,6 @@ import play.api.mvc.request.RequestTarget
 import play.api.routing.Router
 import play.core.WebCommands
 
-/**
-  * Handles all requests.
-  *
-  * https://www.playframework.com/documentation/latest/ScalaHttpRequestHandlers#extending-the-default-request-handler
-  */
 class RequestHandler @Inject()(webCommands: WebCommands,
                                optDevContext: OptionalDevContext,
                                router: Router,

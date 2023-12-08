@@ -11,12 +11,6 @@ import play.core.SourceMapper
 
 import scala.concurrent._
 
-/**
-  * Provides a stripped down error handler that does not use HTML in error pages, and
-  * prints out debugging output.
-  *
-  * https://www.playframework.com/documentation/latest/ScalaErrorHandling
-  */
 class ErrorHandler(environment: Environment,
                    configuration: Configuration,
                    sourceMapper: Option[SourceMapper] = None,
